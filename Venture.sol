@@ -36,6 +36,13 @@ contract DAO is Owned {
         mapping(uint => bool) voted;
     }
 
+        struct rep {
+//      the address of the user that left rep
+        address user;
+        string message;
+        uint256 amount;
+    }
+
     address public manager;
     mapping (address => Member) public members;
     Proposal[] proposals;
@@ -147,7 +154,33 @@ contract DAO is Owned {
         return requests.length;
     }
 
-          
+    //  can only give a max of 3 to one account
+    //
+    function giveRep( address _user, uint256 _amount, string memory _message) public payable {
+        Member storage user = members[_user];
+        require(_amount &&_amount <= 3 &&user.leftRep[msg.sender] == false);
+        rep memory _rep;
+        _rep.user = msg.sender;
+        _rep.message = _message;
+        _rep.amount = _amount;
+        user.leftRep[msg.sender] = true;
+        user.rep.add(_amount);
+        sender.repToGive.sub(_amount);
+    }
+
+    function negRep(address _user, uint256 _amount, string memory _message) public payable {
+        Member storage user = members[_user];
+        require(amount <= 3 &&user.leftRep[msg.sender] == false);
+        rep memory _rep;
+        _rep.user = msg.sender;
+        _rep.message = _message;
+        _rep.amount = _amount;
+        user.leftRep[msg.sender] = true;
+        user.rep.sub(_amount);
+        sender.repToGive.sub(_amount);
+    }
+
+
 }
 
 // ----------------------------------------------------------------------------

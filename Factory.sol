@@ -25,16 +25,19 @@ contract Factory{
                                          tokenRate,
                                          entityName,
                                          missionDescription);
+        return newVenture;
         }
 
     function createCrowdsale(Token _token, uint rate, address _wallet)
                              public payable returns(address newCon){
     	address newCrowdsale = new Crowdsale(Token _token, uint rate, address _wallet); 
+        return newCrowdsale;
     }
 
     function createToken(string memory name, string memory symbol, address payable creator)
                          public payable returns(address newCon){
     	address newToken = new Token(name, symbol, creator);
+        return newToken;
     }
 
 }
